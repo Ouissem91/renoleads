@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RenoLeads — Leads & RDV Rénovation</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;}
+body{background:#f5f5f3;min-height:100vh;}
+.hide{display:none!important;}
+nav{background:#fff;border-bottom:1px solid #e5e5e5;padding:0 24px;height:52px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:99;}
+.logo{font-size:16px;font-weight:700;color:#111;}
+.logo b{color:#1a56db;font-weight:700;}
+.nav-r{display:flex;align-items:center;gap:10px;}
+.admin-link{font-size:12px;color:#aaa;cursor:pointer;padding:4px 10px;border:1px solid #e5e5e5;border-radius:6px;}
+.admin-link:hover{color:#555;border-color:#ccc;}
+/* CATALOGUE PUBLIC */
+#s-cat{padding:0;}
+.ch{background:#fff;border-bottom:1px solid #e5e5e5;padding:20px 24px;}
+.ch h1{font-size:22px;font-weight:700;color:#111;margin-bottom:4px;}
+.ch p{font-size:14px;color:#888;}
+.cbody{padding:20px 24px;}
+.dbanner{background:#EEF2FF;border:1px solid #c7d2fe;border-radius:10px;padding:12px 16px;margin-bottom:16px;font-size:13px;color:#3730a3;}
+.expl{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.el{background:#FFF3E0;border:1px solid #fed7aa;border-radius:10px;padding:14px;}
+.er{background:#DCFCE7;border:1px solid #bbf7d0;border-radius:10px;padding:14px;}
+.el h3{font-size:13px;font-weight:700;color:#c2410c;margin-bottom:4px;}
+.er h3{font-size:13px;font-weight:700;color:#15803d;margin-bottom:4px;}
+.el p{font-size:12px;color:#9a3412;line-height:1.5;}
+.er p{font-size:12px;color:#166534;line-height:1.5;}
+.tabs{display:flex;border:1px solid #e5e5e5;border-radius:10px;overflow:hidden;width:fit-content;margin-bottom:18px;background:#fff;}
+.tab{padding:9px 24px;font-size:13px;font-weight:600;cursor:pointer;color:#888;border-right:1px solid #e5e5e5;}
+.tab:last-child{border-right:none;}
+.tab.at{background:#EEF2FF;color:#3730a3;}
+.tab.al{background:#FFF3E0;color:#E65100;}
+.tab.ar{background:#DCFCE7;color:#16a34a;}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px;}
+.sc{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:12px 14px;}
+.sn{font-size:20px;font-weight:700;color:#111;}.sl{font-size:11px;color:#888;margin-top:2px;}
+.sinp{padding:8px 16px;border:1px solid #ddd;border-radius:20px;font-size:13px;width:300px;outline:none;display:block;margin-bottom:10px;}
+.sinp:focus{border-color:#1a56db;}
+.fltrs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px;}
+.fb{background:#fff;border:1px solid #ddd;border-radius:20px;padding:5px 12px;font-size:12px;color:#555;cursor:pointer;}
+.fb.on{background:#1a56db;border-color:#1a56db;color:#fff;font-weight:600;}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px;}
+.lcard{background:#fff;border-radius:12px;overflow:hidden;cursor:pointer;border:1.5px solid #e5e5e5;transition:transform 0.1s,border-color 0.15s;}
+.lcard:hover{transform:translateY(-2px);}
+.lcard.tl{border-top:3px solid #E65100;}.lcard.tr{border-top:3px solid #16a34a;}
+.lcard.tl:hover{border-color:#E65100;}.lcard.tr:hover{border-color:#16a34a;}
+.ct{padding:12px 14px 10px;border-bottom:1px solid #f0f0f0;display:flex;justify-content:space-between;align-items:flex-start;}
+.cv{font-size:15px;font-weight:700;color:#111;}.ccp{font-size:11px;color:#888;margin-top:1px;}
+.bl{background:#FFF3E0;color:#c2410c;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.br2{background:#DCFCE7;color:#15803d;font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;}
+.cbod{padding:10px 14px;}
+.cf{display:flex;justify-content:space-between;font-size:12px;padding:3px 0;border-bottom:1px solid #f8f8f8;}
+.cf:last-child{border-bottom:none;}.cfl{color:#888;}.cfv{font-weight:600;color:#111;text-align:right;}
+.blr{filter:blur(4px);color:#ccc;user-select:none;}
+.cft{padding:9px 14px;border-top:1px solid #f0f0f0;display:flex;align-items:center;justify-content:space-between;}
+.prx{font-size:15px;font-weight:700;color:#111;}
+.btnl{background:#E65100;color:#fff;border:none;border-radius:7px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;}
+.btnr{background:#16a34a;color:#fff;border:none;border-radius:7px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer;}
+.loading{text-align:center;padding:48px;color:#aaa;font-size:14px;}
+/* DETAIL */
+#s-det{padding:20px 24px;}
+.back{font-size:13px;color:#1a56db;cursor:pointer;margin-bottom:18px;display:inline-flex;align-items:center;gap:4px;}
+.back:hover{text-decoration:underline;}
+.dgrid{display:grid;grid-template-columns:1fr 290px;gap:18px;align-items:start;}
+.dmain{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:22px;}
+.dban{border-radius:8px;padding:10px 14px;margin-bottom:14px;font-size:12px;font-weight:600;}
+.dbl{background:#FFF3E0;color:#c2410c;}.dbr{background:#DCFCE7;color:#15803d;}
+.dmain h2{font-size:20px;font-weight:700;color:#111;margin-bottom:4px;}
+.dmeta{font-size:12px;color:#888;margin-bottom:16px;}
+.dsec{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.06em;margin:16px 0 8px;}
+.drow{display:flex;justify-content:space-between;font-size:13px;padding:7px 0;border-bottom:1px solid #f5f5f5;}
+.drow:last-child{border-bottom:none;}.drl{color:#888;}.drv{font-weight:600;color:#111;text-align:right;max-width:60%;}
+.lckd{background:#f9f9f9;border:1px dashed #ddd;border-radius:10px;padding:16px;text-align:center;margin-top:14px;}
+.lckd p{font-size:12px;color:#888;line-height:1.5;margin-top:6px;}
+.rdvb{background:#DCFCE7;border:1px solid #bbf7d0;border-radius:10px;padding:14px;margin-top:14px;}
+.rdvb h4{font-size:13px;font-weight:700;color:#15803d;margin-bottom:4px;}
+.rdvb p{font-size:12px;color:#166534;}
+.pbox{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;position:sticky;top:62px;}
+.pbox h3{font-size:15px;font-weight:700;margin-bottom:8px;}
+.pban{border-radius:6px;padding:7px 10px;font-size:11px;font-weight:600;margin-bottom:14px;}
+.prow{display:flex;justify-content:space-between;font-size:13px;padding:6px 0;border-bottom:1px solid #f5f5f5;}
+.ptot{display:flex;justify-content:space-between;font-size:16px;font-weight:700;padding:14px 0 16px;}
+.paybtn{width:100%;color:#fff;border:none;border-radius:9px;padding:14px;font-size:14px;font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;}
+.paybtn:hover{opacity:.9;}
+.pbl{background:#E65100;}.pbr{background:#16a34a;}
+.stag{background:rgba(255,255,255,.2);font-size:10px;padding:2px 7px;border-radius:4px;}
+.pnote{font-size:10px;color:#aaa;text-align:center;margin-top:10px;line-height:1.5;}
+.trust{display:flex;justify-content:center;gap:16px;margin-top:12px;flex-wrap:wrap;}
+.trust-item{font-size:11px;color:#888;display:flex;align-items:center;gap:4px;}
+/* ADMIN LOGIN */
+#s-adminlogin{min-height:100vh;display:flex;align-items:center;justify-content:center;}
+.abox{background:#fff;border:1px solid #e5e5e5;border-radius:14px;padding:32px;width:340px;}
+.atitle{font-size:20px;font-weight:700;text-align:center;margin-bottom:4px;color:#111;}
+.atitle b{color:#1a56db;}
+.asub{font-size:13px;color:#888;text-align:center;margin-bottom:20px;}
+.lbl{font-size:12px;color:#555;display:block;margin:10px 0 4px;}
+.finp{width:100%;padding:10px 12px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none;background:#fafafa;}
+.finp:focus{border-color:#1a56db;background:#fff;}
+.bbtn{width:100%;background:#1a56db;color:#fff;border:none;border-radius:8px;padding:12px;font-size:14px;font-weight:600;cursor:pointer;margin-top:14px;}
+.bbtn:hover{background:#1648c0;}
+.lerr{color:#dc2626;font-size:12px;text-align:center;margin-top:8px;min-height:18px;}
+.back-cat{font-size:13px;color:#1a56db;cursor:pointer;text-align:center;display:block;margin-top:14px;}
+/* ADMIN DASHBOARD */
+#s-adm{display:flex;min-height:calc(100vh - 52px);}
+.asb{width:190px;background:#111;flex-shrink:0;}
+.asblogo{padding:14px 16px;border-bottom:1px solid #333;font-size:13px;font-weight:700;color:#fff;}
+.asblogo b{color:#1a56db;}
+.asi{padding:10px 16px;font-size:13px;color:#888;cursor:pointer;display:flex;align-items:center;gap:8px;border-left:2px solid transparent;}
+.asi.on{background:#1a1a1a;color:#fff;border-left-color:#1a56db;}
+.asi:hover{background:#1a1a1a;color:#fff;}
+.asd{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+.amain{flex:1;padding:22px 24px;background:#f5f5f3;overflow-y:auto;}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
+.kpi{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:14px;}
+.kv{font-size:24px;font-weight:700;color:#111;}.kl{font-size:11px;color:#888;margin-top:2px;}
+.atbl{background:#fff;border:1px solid #e5e5e5;border-radius:10px;overflow:hidden;margin-bottom:16px;}
+.atblh{padding:12px 16px;border-bottom:1px solid #f0f0f0;font-size:13px;font-weight:700;color:#111;display:flex;justify-content:space-between;align-items:center;}
+.refbtn{font-size:11px;color:#1a56db;cursor:pointer;padding:4px 10px;border:1px solid #1a56db;border-radius:6px;}
+table{width:100%;border-collapse:collapse;}
+th{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;padding:9px 14px;border-bottom:1px solid #f0f0f0;text-align:left;background:#fafafa;}
+td{font-size:13px;padding:9px 14px;border-bottom:1px solid #f5f5f5;color:#111;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#fafafa;}
+.pill{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600;}
+.pd{background:#DCFCE7;color:#16a34a;}.pv{background:#FEE2E2;color:#dc2626;}
+.pil{background:#FFF3E0;color:#c2410c;}.pir{background:#DCFCE7;color:#15803d;}
+.twocol{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.mini{background:#fff;border:1px solid #e5e5e5;border-radius:10px;padding:14px;}
+.mini h3{font-size:13px;font-weight:700;margin-bottom:12px;}
+.brow{display:flex;align-items:center;gap:8px;margin-bottom:7px;font-size:12px;}
+.blbl{width:60px;color:#888;flex-shrink:0;}
+.btrk{flex:1;height:6px;background:#f0f0f0;border-radius:3px;}
+.bfll{height:100%;border-radius:3px;}
+.bval{width:32px;text-align:right;font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">réno<b>leads</b></div>
+  <div class="nav-r">
+    <span class="admin-link" id="adminlink">Admin</span>
+  </div>
+</nav>
+
+<!-- CATALOGUE PUBLIC -->
+<div id="s-cat">
+  <div class="ch">
+    <h1>Leads &amp; RDV Rénovation</h1>
+    <p>Achetez un lead ou un RDV qualifié — coordonnées transmises instantanément après paiement</p>
+  </div>
+  <div class="cbody">
+    <div class="dbanner hide" id="dban">ℹ️ Mode démonstration — vos vrais leads Airtable apparaîtront ici automatiquement.</div>
+    <div class="expl">
+      <div class="el"><h3>Lead — Coordonnées brutes</h3><p>Prospect ayant rempli un formulaire. Pas encore contacté. À vous de qualifier et closer. Prix bas, volume élevé.</p></div>
+      <div class="er"><h3>RDV — Rendez-vous confirmé</h3><p>Prospect qualifié par téléphone. RDV fixé à une date précise. Vous arrivez directement en visite. Taux de conversion maximal.</p></div>
+    </div>
+    <div class="tabs">
+      <div class="tab at" id="tab-t" onclick="switchTab('t')">Tous</div>
+      <div class="tab" id="tab-l" onclick="switchTab('l')">Leads</div>
+      <div class="tab" id="tab-r" onclick="switchTab('r')">RDV</div>
+    </div>
+    <div class="stats">
+      <div class="sc"><div class="sn" id="st">0</div><div class="sl">Total disponibles</div></div>
+      <div class="sc"><div class="sn" id="sl2" style="color:#E65100">0</div><div class="sl">Leads</div></div>
+      <div class="sc"><div class="sn" id="sr2" style="color:#16a34a">0</div><div class="sl">RDV confirmés</div></div>
+      <div class="sc"><div class="sn">France</div><div class="sl">Zone couverte</div></div>
+    </div>
+    <input class="sinp" type="text" id="cpinp" placeholder="Rechercher par code postal (ex: 75, 69, 33...)">
+    <div class="fltrs">
+      <div class="fb on" id="fb0" onclick="doFilt('',this)">Tous</div>
+      <div class="fb" onclick="doFilt('75',this)">Paris (75)</div>
+      <div class="fb" onclick="doFilt('69',this)">Lyon (69)</div>
+      <div class="fb" onclick="doFilt('13',this)">Marseille (13)</div>
+      <div class="fb" onclick="doFilt('33',this)">Bordeaux (33)</div>
+      <div class="fb" onclick="doFilt('31',this)">Toulouse (31)</div>
+      <div class="fb" onclick="doFilt('urgent',this)">Urgent</div>
+    </div>
+    <div class="grid" id="grid"><div class="loading">Chargement des leads...</div></div>
+  </div>
+</div>
+
+<!-- DETAIL -->
+<div id="s-det" class="hide">
+  <div style="padding:20px 24px;">
+    <span class="back" id="backbtn">← Retour au catalogue</span>
+    <div class="dgrid">
+      <div class="dmain">
+        <div class="dban" id="dban2"></div>
+        <h2 id="dvil"></h2>
+        <div class="dmeta" id="dmet"></div>
+        <div class="dsec">Détails du projet</div>
+        <div class="drow"><span class="drl">Code postal</span><span class="drv" id="dcp"></span></div>
+        <div class="drow"><span class="drl">Profil prospect</span><span class="drv" id="dpro"></span></div>
+        <div class="drow"><span class="drl">Concerne</span><span class="drv" id="dcon"></span></div>
+        <div class="drow"><span class="drl">Travaux</span><span class="drv" id="dtra"></span></div>
+        <div class="drow"><span class="drl">Budget</span><span class="drv" id="dbud"></span></div>
+        <div class="drow"><span class="drl">Délai</span><span class="drv" id="ddel"></span></div>
+        <div class="rdvb hide" id="drdvb"><h4>RDV confirmé</h4><p id="drdvd"></p></div>
+        <div class="dsec">Coordonnées du prospect</div>
+        <div class="lckd">
+          <div style="font-size:24px">🔒</div>
+          <p>Nom, téléphone et email transmis par email<br>immédiatement après paiement.</p>
+        </div>
+      </div>
+      <div class="pbox">
+        <h3 id="ptit"></h3>
+        <div class="pban" id="pban"></div>
+        <div class="prow"><span style="color:#888" id="pdesc"></span><span id="pht" style="font-weight:600"></span></div>
+        <div class="prow"><span style="color:#888">TVA 20%</span><span id="ptva" style="color:#888"></span></div>
+        <div class="ptot"><span>Total TTC</span><span id="pttc"></span></div>
+        <button class="paybtn" id="paybtn">Payer maintenant <span class="stag">stripe</span></button>
+        <div class="trust">
+          <span class="trust-item">🔒 Paiement sécurisé</span>
+          <span class="trust-item">✓ Lead exclusif</span>
+          <span class="trust-item">⚡ Reçu instantanément</span>
+        </div>
+        <div class="pnote" id="pnote"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ADMIN LOGIN -->
+<div id="s-adminlogin" class="hide">
+  <div class="abox">
+    <div class="atitle">réno<b>leads</b></div>
+    <div class="asub">Accès administrateur</div>
+    <label class="lbl">Mot de passe admin</label>
+    <input class="finp" type="password" id="apw" placeholder="••••••••">
+    <button class="bbtn" id="albtn">Accéder au dashboard</button>
+    <div class="lerr" id="alerr"></div>
+    <span class="back-cat" id="backcatbtn">← Retour au catalogue</span>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div id="s-adm" class="hide">
+  <div class="asb">
+    <div class="asblogo">réno<b>leads</b> <span style="font-size:10px;color:#555;font-weight:400">admin</span></div>
+    <div style="padding:8px 0">
+      <div class="asi on"><span class="asd" style="background:#1a56db"></span>Dashboard</div>
+      <div class="asi"><span class="asd" style="background:#E65100"></span>Leads</div>
+      <div class="asi"><span class="asd" style="background:#16a34a"></span>RDV</div>
+      <div class="asi"><span class="asd" style="background:#dc2626"></span>Vendus</div>
+      <div class="asi" id="admcatbtn"><span class="asd"></span>Vue catalogue</div>
+      <div class="asi" id="admlogout"><span class="asd"></span>Déconnexion</div>
+    </div>
+  </div>
+  <div class="amain">
+    <div class="kpis">
+      <div class="kpi"><div class="kv" id="at2">0</div><div class="kl">Total leads + RDV</div></div>
+      <div class="kpi"><div class="kv" id="al2" style="color:#E65100">0</div><div class="kl">Leads</div></div>
+      <div class="kpi"><div class="kv" id="ar2" style="color:#16a34a">0</div><div class="kl">RDV</div></div>
+      <div class="kpi"><div class="kv" id="av2" style="color:#dc2626">0</div><div class="kl">Vendus</div></div>
+    </div>
+    <div class="atbl">
+      <div class="atblh">Tous les leads &amp; RDV <span class="refbtn" id="refbtn">Actualiser</span></div>
+      <table>
+        <thead><tr><th>Type</th><th>Ville</th><th>CP</th><th>Concerne</th><th>Budget</th><th>Prix</th><th>Statut</th></tr></thead>
+        <tbody id="atbody"><tr><td colspan="7" style="text-align:center;color:#aaa;padding:20px">Chargement...</td></tr></tbody>
+      </table>
+    </div>
+    <div class="twocol">
+      <div class="mini"><h3>Répartition</h3>
+        <div class="brow"><span class="blbl">Leads</span><div class="btrk"><div class="bfll" id="bfl" style="background:#E65100;width:0%"></div></div><span class="bval" id="pvl">0%</span></div>
+        <div class="brow"><span class="blbl">RDV</span><div class="btrk"><div class="bfll" id="bfr" style="background:#16a34a;width:0%"></div></div><span class="bval" id="pvr">0%</span></div>
+      </div>
+      <div class="mini"><h3>Statuts</h3>
+        <div class="brow"><span class="blbl">Dispo</span><div class="btrk"><div class="bfll" id="bfd" style="background:#1a56db;width:0%"></div></div><span class="bval" id="pvd">0%</span></div>
+        <div class="brow"><span class="blbl">Vendus</span><div class="btrk"><div class="bfll" id="bfv" style="background:#dc2626;width:0%"></div></div><span class="bval" id="pvv">0%</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+var AT = 'patFDqjmeWwMiCges.c6a6535e01a0af01e897481a845e83dffd09a89627db6d87ae799cc3294cb842';
+var BID = 'appYHVJ2S2hk9S6BL';
+var TBL = 'Leads r\u00e9novation';
+var TBR = 'Rdv r\u00e9novation';
+var LNKL = 'https://buy.stripe.com/6oU3cxegj3da9BscDZ4sE00';
+var LNKR = 'https://buy.stripe.com/3cI6oJ3BF4he00S7jF4sE01';
+var ADMINPWD = 'admin2024';
+
+var DEMO = [
+  {id:'d1',tp:'lead',vi:'Andernos',cp:'42480',pr:'Propri\u00e9taire',co:'Logement entier',tr:'A d\u00e9finir',bu:'A d\u00e9finir',de:"D'ici 6 mois",px:120,rd:''},
+  {id:'d2',tp:'rdv',vi:'Chamali\u00e8res',cp:'63400',pr:'Propri\u00e9taire',co:'Salon',tr:'Tous travaux',bu:'Droits aux aides',de:"D'ici 3 mois",px:200,rd:'Jeudi 24 avril \u00e0 14h00'},
+  {id:'d3',tp:'lead',vi:'Chevry-Cossigny',cp:'77173',pr:'Propri\u00e9taire',co:'Logement entier',tr:'Modification \u00e9tage',bu:'40 000\u20ac',de:'D\u00e8s que possible',px:120,rd:''},
+  {id:'d4',tp:'rdv',vi:'Paris 15e',cp:'75015',pr:'Propri\u00e9taire',co:'Cuisine',tr:'R\u00e9fection',bu:'22 000\u20ac',de:"D'ici 3 mois",px:200,rd:'Mardi 22 avril \u00e0 10h30'},
+  {id:'d5',tp:'lead',vi:'Lyon 6e',cp:'69006',pr:'Propri\u00e9taire',co:'Salle de bain',tr:'R\u00e9novation',bu:'18 000\u20ac',de:"D'ici 3 mois",px:120,rd:''},
+  {id:'d6',tp:'lead',vi:'Bordeaux',cp:'33000',pr:'Locataire',co:'Salon',tr:'Peinture + parquet',bu:'12 000\u20ac',de:"D'ici 6 mois",px:100,rd:''}
+];
+
+var leads = [];
+var cur = null;
+var aTab = 't';
+var aDep = '';
+
+function gf(f) {
+  for (var i=1;i<arguments.length;i++) {
+    var v = f[arguments[i]];
+    if (v !== undefined && v !== null && String(v).trim() !== '') return v;
+  }
+  return '\u2014';
+}
+
+function parse(recs, tp) {
+  return recs.map(function(r) {
+    var f = r.fields||{};
+    return {
+      id:r.id, tp:tp,
+      vi:gf(f,'Ville','Name'),
+      cp:gf(f,'Code postal','CP'),
+      pr:gf(f,'Le prospect est :','Prospect'),
+      co:gf(f,'Concerne :','Concerne'),
+      tr:gf(f,'Travaux \u00e0 r\u00e9aliser :','Travaux'),
+      bu:gf(f,'Budget :','Budget'),
+      de:gf(f,'Souhaite r\u00e9aliser les travaux dans :','D\u00e9lai'),
+      px:f['Prix']||(tp==='rdv'?200:120),
+      st:f['Statut']||'Disponible',
+      rd:f['Date du RDV']||f['Date RDV']||''
+    };
+  });
+}
+
+function fetchAT(tbl,fml) {
+  var url='https://api.airtable.com/v0/'+BID+'/'+encodeURIComponent(tbl)+'?pageSize=100';
+  if(fml) url+='&filterByFormula='+encodeURIComponent(fml);
+  return fetch(url,{headers:{'Authorization':'Bearer '+AT}})
+    .then(function(r){if(!r.ok)throw new Error(r.status);return r.json();})
+    .then(function(d){return d.records||[];});
+}
+
+function loadLeads() {
+  document.getElementById('grid').innerHTML='<div class="loading">Chargement des leads...</div>';
+  Promise.all([
+    fetchAT(TBL,"Statut='Disponible'"),
+    fetchAT(TBR,"Statut='Disponible'")
+  ]).then(function(res) {
+    leads=parse(res[0],'lead').concat(parse(res[1],'rdv'));
+    document.getElementById('dban').classList.add('hide');
+    renderGrid(filt());
+  }).catch(function() {
+    leads=DEMO;
+    document.getElementById('dban').classList.remove('hide');
+    renderGrid(filt());
+  });
+}
+
+function loadAdmin() {
+  var tb=document.getElementById('atbody');
+  tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:#aaa;padding:20px">Chargement...</td></tr>';
+  Promise.all([fetchAT(TBL),fetchAT(TBR)]).then(function(res) {
+    var all=parse(res[0],'lead').concat(parse(res[1],'rdv'));
+    updAdm(all);
+    tb.innerHTML=all.map(function(r) {
+      return '<tr><td><span class="pill '+(r.tp==='rdv'?'pir':'pil')+'">'+(r.tp==='rdv'?'RDV':'Lead')+'</span></td>'+
+        '<td><strong>'+r.vi+'</strong></td><td>'+r.cp+'</td><td>'+r.co+'</td><td>'+r.bu+'</td><td>'+r.px+'\u20ac</td>'+
+        '<td><span class="pill '+(r.st==='Vendu'?'pv':'pd')+'">'+r.st+'</span></td></tr>';
+    }).join('');
+  }).catch(function() {
+    updAdm(DEMO);
+    tb.innerHTML=DEMO.map(function(r) {
+      return '<tr><td><span class="pill '+(r.tp==='rdv'?'pir':'pil')+'">'+(r.tp==='rdv'?'RDV':'Lead')+'</span></td>'+
+        '<td><strong>'+r.vi+'</strong></td><td>'+r.cp+'</td><td>'+r.bu+'</td><td>'+r.px+'\u20ac</td>'+
+        '<td><span class="pill pd">Disponible</span></td></tr>';
+    }).join('');
+  });
+}
+
+function updAdm(data) {
+  var tot=data.length,lea=data.filter(function(r){return r.tp==='lead';}).length;
+  var rdv=data.filter(function(r){return r.tp==='rdv';}).length;
+  var ven=data.filter(function(r){return r.st==='Vendu';}).length;
+  document.getElementById('at2').textContent=tot;
+  document.getElementById('al2').textContent=lea;
+  document.getElementById('ar2').textContent=rdv;
+  document.getElementById('av2').textContent=ven;
+  function p(n){return tot?Math.round(n/tot*100):0;}
+  document.getElementById('bfl').style.width=p(lea)+'%';
+  document.getElementById('bfr').style.width=p(rdv)+'%';
+  document.getElementById('bfd').style.width=p(tot-ven)+'%';
+  document.getElementById('bfv').style.width=p(ven)+'%';
+  document.getElementById('pvl').textContent=p(lea)+'%';
+  document.getElementById('pvr').textContent=p(rdv)+'%';
+  document.getElementById('pvd').textContent=p(tot-ven)+'%';
+  document.getElementById('pvv').textContent=p(ven)+'%';
+}
+
+function filt() {
+  var f=leads;
+  if(aTab==='l') f=f.filter(function(x){return x.tp==='lead';});
+  if(aTab==='r') f=f.filter(function(x){return x.tp==='rdv';});
+  if(aDep==='urgent') f=f.filter(function(x){return x.de&&x.de.toLowerCase().indexOf('possible')>=0;});
+  else if(aDep) f=f.filter(function(x){return String(x.cp).indexOf(aDep)===0;});
+  var sv=document.getElementById('cpinp')?document.getElementById('cpinp').value:'';
+  if(sv) f=f.filter(function(x){return String(x.cp).indexOf(sv)===0;});
+  return f;
+}
+
+function renderGrid(data) {
+  document.getElementById('st').textContent=leads.length;
+  document.getElementById('sl2').textContent=leads.filter(function(x){return x.tp==='lead';}).length;
+  document.getElementById('sr2').textContent=leads.filter(function(x){return x.tp==='rdv';}).length;
+  var g=document.getElementById('grid');
+  if(!data.length){g.innerHTML='<div class="loading">Aucun r\u00e9sultat.</div>';return;}
+  g.innerHTML=data.map(function(l) {
+    return '<div class="lcard t'+l.tp[0]+'" onclick="openDet(\''+l.id+'\')">'+
+      '<div class="ct"><div><div class="cv">'+l.vi+'</div><div class="ccp">'+l.cp+'</div></div>'+
+      '<span class="b'+(l.tp==='rdv'?'r2':'l')+'">'+(l.tp==='rdv'?'RDV confirmé':'Lead')+'</span></div>'+
+      '<div class="cbod">'+
+      '<div class="cf"><span class="cfl">Concerne</span><span class="cfv">'+l.co+'</span></div>'+
+      '<div class="cf"><span class="cfl">Budget</span><span class="cfv">'+l.bu+'</span></div>'+
+      '<div class="cf"><span class="cfl">Délai</span><span class="cfv">'+l.de+'</span></div>'+
+      (l.tp==='rdv'?'<div class="cf"><span class="cfl">RDV</span><span class="cfv" style="color:#16a34a">Date confirmée</span></div>':'')+
+      '<div class="cf"><span class="cfl">Contact</span><span class="cfv blr">\u2022\u2022\u2022\u2022\u2022\u2022</span></div>'+
+      '</div><div class="cft"><div class="prx">'+l.px+'\u20ac HT</div>'+
+      '<button class="btn'+(l.tp==='rdv'?'r':'l')+'" onclick="event.stopPropagation();openDet(\''+l.id+'\')">'+(l.tp==='rdv'?'Voir le RDV':'Voir le lead')+'</button>'+
+      '</div></div>';
+  }).join('');
+}
+
+function switchTab(t) {
+  aTab=t;
+  ['t','l','r'].forEach(function(x){
+    var el=document.getElementById('tab-'+x);
+    if(el) el.className='tab';
+  });
+  var sel=document.getElementById('tab-'+t);
+  if(sel) sel.classList.add('a'+t);
+  renderGrid(filt());
+}
+
+function doFilt(dep,btn) {
+  aDep=dep;
+  document.querySelectorAll('.fb').forEach(function(b){b.classList.remove('on');});
+  btn.classList.add('on');
+  document.getElementById('cpinp').value='';
+  renderGrid(filt());
+}
+
+function openDet(id) {
+  cur=null;
+  for(var i=0;i<leads.length;i++){if(leads[i].id===id){cur=leads[i];break;}}
+  if(!cur) return;
+  var isR=cur.tp==='rdv';
+  document.getElementById('dban2').className='dban '+(isR?'dbr':'dbl');
+  document.getElementById('dban2').textContent=isR?'RDV confirm\u00e9 \u2014 Rendez-vous fix\u00e9 \u00e0 une date pr\u00e9cise':'Lead \u2014 Coordonn\u00e9es brutes \u00e0 qualifier';
+  document.getElementById('dvil').textContent=cur.vi;
+  document.getElementById('dmet').textContent='Code postal '+cur.cp+' \u00b7 Vendu en exclusivit\u00e9';
+  document.getElementById('dcp').textContent=cur.cp;
+  document.getElementById('dpro').textContent=cur.pr;
+  document.getElementById('dcon').textContent=cur.co;
+  document.getElementById('dtra').textContent=cur.tr;
+  document.getElementById('dbud').textContent=cur.bu;
+  document.getElementById('ddel').textContent=cur.de;
+  var rb=document.getElementById('drdvb');
+  if(isR&&cur.rd){rb.classList.remove('hide');document.getElementById('drdvd').textContent=cur.rd;}
+  else{rb.classList.add('hide');}
+  var ht=cur.px,tva=Math.round(ht*0.2);
+  document.getElementById('ptit').textContent=isR?'D\u00e9bloquer ce RDV':'D\u00e9bloquer ce lead';
+  document.getElementById('pban').className='pban '+(isR?'dbr':'dbl');
+  document.getElementById('pban').textContent=isR?'RDV confirm\u00e9 \u2014 Rendez-vous fix\u00e9':'Lead \u2014 coordonn\u00e9es brutes';
+  document.getElementById('pdesc').textContent=isR?'RDV r\u00e9novation France':'Lead r\u00e9novation France';
+  document.getElementById('pht').textContent=ht+'\u20ac HT';
+  document.getElementById('ptva').textContent=tva+'\u20ac';
+  document.getElementById('pttc').textContent=(ht+tva)+'\u20ac';
+  var pb=document.getElementById('paybtn');
+  pb.className='paybtn '+(isR?'pbr':'pbl');
+  pb.onclick=function(){window.location.href=isR?LNKR:LNKL;};
+  document.getElementById('pnote').textContent=isR?'RDV vendu en exclusivit\u00e9 \u00b7 Coordonn\u00e9es transmises par email \u00b7 Non remboursable':'Lead vendu en exclusivit\u00e9 \u00b7 Coordonn\u00e9es transmises par email \u00b7 Non remboursable';
+  goSec('det');
+}
+
+function goSec(s) {
+  ['cat','det','adminlogin','adm'].forEach(function(x){
+    document.getElementById('s-'+x).classList.add('hide');
+  });
+  document.getElementById('s-'+s).classList.remove('hide');
+  window.scrollTo(0,0);
+}
+
+window.onload=function() {
+  loadLeads();
+
+  document.getElementById('adminlink').onclick=function(){goSec('adminlogin');};
+  document.getElementById('backbtn').onclick=function(){goSec('cat');};
+  document.getElementById('backcatbtn').onclick=function(){goSec('cat');};
+  document.getElementById('admcatbtn').onclick=function(){goSec('cat');};
+  document.getElementById('refbtn').onclick=loadAdmin;
+
+  document.getElementById('admlogout').onclick=function(){
+    goSec('cat');
+  };
+
+  document.getElementById('cpinp').oninput=function(){
+    document.querySelectorAll('.fb').forEach(function(b){b.classList.remove('on');});
+    document.getElementById('fb0').classList.add('on');
+    aDep='';
+    renderGrid(filt());
+  };
+
+  document.getElementById('albtn').onclick=function(){
+    var pw=document.getElementById('apw').value;
+    var err=document.getElementById('alerr');
+    if(pw===ADMINPWD){
+      err.textContent='';
+      loadAdmin();
+      goSec('adm');
+    } else {
+      err.textContent='Mot de passe incorrect';
+      setTimeout(function(){err.textContent='';},3000);
+    }
+  };
+
+  document.getElementById('apw').onkeydown=function(e){
+    if(e.key==='Enter') document.getElementById('albtn').onclick();
+  };
+};
+</script>
+</body>
+</html>
