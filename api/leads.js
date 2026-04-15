@@ -30,7 +30,7 @@ export default async function handler(req, res) {
         travaux: rec.fields['Travaux à réaliser :'] || '—',
         budget: rec.fields['Budget :'] || '—',
         delai: rec.fields['Souhaite réaliser les travaux dans :'] || '—',
-        prix: rec.fields['Prix'] || (t.type === 'rdv' ? 200 : 120),
+        prix: rec.fields['Prix'] || (t.type === 'rdv' ? 240 : 39),
         statut: rec.fields['Statut'] || 'Disponible',
         rdvDate: rec.fields['Date du RDV'] || ''
       }));
