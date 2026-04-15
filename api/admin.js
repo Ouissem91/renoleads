@@ -24,7 +24,7 @@ export default async function handler(req, res) {
         cp: rec.fields['Code postal'] || '—',
         concerne: rec.fields['Concerne :'] || rec.fields['Concerne'] || '—',
         budget: rec.fields['Budget :'] || rec.fields['Budget'] || '—',
-        prix: rec.fields['Prix'] || (t.type === 'rdv' ? 200 : 120),
+        prix: rec.fields['Prix'] || (t.type === 'rdv' ? 240 : 39),
         statut: rec.fields['Statut'] || 'Disponible'
       }));
     }));
