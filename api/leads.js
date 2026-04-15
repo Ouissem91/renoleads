@@ -1,6 +1,5 @@
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET');
 
   const TOKEN = process.env.AIRTABLE_TOKEN;
   const BASE_ID = process.env.AIRTABLE_BASE_ID;
@@ -9,17 +8,13 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Missing env variables' });
   }
 
-  const tables = [
-    { name: 'Leads r%C3%A9novation', type: 'lead' },
-    { name: 'Rdv r%C3%A9novation', type: 'rdv' }
-  ];
-
   try {
-    const results = await Promise.all(tables.map(async (t) => {
+    const results = await Promise.all([
+      { name: 'Leads', type: 'lead' },
+      { name: 'RDV', type: 'rdv' }
+    ].map(async (t) => {
       const url = `https://api.airtable.com/v0/${BASE_ID}/${t.name}?pageSize=100&filterByFormula=${encodeURIComponent("Statut='Disponible'")}`;
-      const r = await fetch(url, {
-        headers: { 'Authorization': `Bearer ${TOKEN}` }
-      });
+      const r = await fetch(url, { headers: { 'Authorization': `Bearer ${TOKEN}` } });
       if (!r.ok) throw new Error(`Airtable error ${r.status}`);
       const data = await r.json();
       return (data.records || []).map(rec => ({
@@ -35,12 +30,10 @@ export default async function handler(req, res) {
         note: rec.fields['Note libre'] || '',
         prix: rec.fields['Prix'] || (t.type === 'rdv' ? 200 : 120),
         statut: rec.fields['Statut'] || 'Disponible',
-        rdvDate: rec.fields['Date du RDV'] || rec.fields['Date RDV'] || ''
+        rdvDate: rec.fields['Date du RDV'] || ''
       }));
     }));
-
-    const all = results.flat();
-    res.status(200).json({ leads: all });
+    res.status(200).json({ leads: results.flat() });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
