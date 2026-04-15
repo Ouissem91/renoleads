@@ -8,17 +8,13 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Missing env variables' });
   }
 
-  const tables = [
-    { name: 'Leads r%C3%A9novation', type: 'lead' },
-    { name: 'Rdv r%C3%A9novation', type: 'rdv' }
-  ];
-
   try {
-    const results = await Promise.all(tables.map(async (t) => {
+    const results = await Promise.all([
+      { name: 'Leads', type: 'lead' },
+      { name: 'RDV', type: 'rdv' }
+    ].map(async (t) => {
       const url = `https://api.airtable.com/v0/${BASE_ID}/${t.name}?pageSize=100`;
-      const r = await fetch(url, {
-        headers: { 'Authorization': `Bearer ${TOKEN}` }
-      });
+      const r = await fetch(url, { headers: { 'Authorization': `Bearer ${TOKEN}` } });
       if (!r.ok) throw new Error(`Airtable error ${r.status}`);
       const data = await r.json();
       return (data.records || []).map(rec => ({
@@ -32,7 +28,6 @@ export default async function handler(req, res) {
         statut: rec.fields['Statut'] || 'Disponible'
       }));
     }));
-
     res.status(200).json({ leads: results.flat() });
   } catch (e) {
     res.status(500).json({ error: e.message });
