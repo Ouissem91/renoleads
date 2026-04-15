@@ -10,13 +10,13 @@ export default async function handler(req, res) {
   }
 
   const tables = [
-    { name: 'Leads rénovation', type: 'lead' },
-    { name: 'Rdv rénovation', type: 'rdv' }
+    { name: 'Leads r%C3%A9novation', type: 'lead' },
+    { name: 'Rdv r%C3%A9novation', type: 'rdv' }
   ];
 
   try {
     const results = await Promise.all(tables.map(async (t) => {
-      const url = `https://api.airtable.com/v0/${BASE_ID}/${encodeURIComponent(t.name)}?pageSize=100&filterByFormula=Statut%3D'Disponible'`;
+      const url = `https://api.airtable.com/v0/${BASE_ID}/${t.name}?pageSize=100&filterByFormula=${encodeURIComponent("Statut='Disponible'")}`;
       const r = await fetch(url, {
         headers: { 'Authorization': `Bearer ${TOKEN}` }
       });
